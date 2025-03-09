@@ -27,6 +27,13 @@ class CongratulationsScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
+              SizedBox(height: 20),
+              // Display face.png between text and button
+              Image.asset(
+                'assets/face.png',
+                height: 150, // Adjust size as needed
+                fit: BoxFit.contain,
+              ),
               SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'floor_plan_screen.dart'; // Import the floor display screen
+import 'game_stats.dart'; // Import the global stats class
 
 class FloorSelectionScreen extends StatelessWidget {
   @override
@@ -35,7 +36,7 @@ class FloorSelectionScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // Buttons at the bottom center
+            // Buttons at the bottom center for floor selection
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -96,6 +97,37 @@ class FloorSelectionScreen extends StatelessWidget {
                         ),
                       ),
                   child: Text("Third Floor"),
+                ),
+                SizedBox(height: 20),
+                // New button for viewing hunt stats
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    side: BorderSide(color: Colors.amber, width: 2),
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => AlertDialog(
+                            title: Text('Hunt Stats'),
+                            content: Text(
+                              'Hunts Completed: ${GameStats.huntsCompleted}\n'
+                              'Total Score: ${GameStats.totalScore}',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text('Close'),
+                              ),
+                            ],
+                          ),
+                    );
+                  },
+                  child: Text("View Hunt Stats"),
                 ),
               ],
             ),

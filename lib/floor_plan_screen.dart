@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart' show rootBundle;
@@ -21,10 +22,57 @@ class _FloorPlanScreenState extends State<FloorPlanScreen> {
   double? randomX;
   double? randomY;
 
+  // Timer and score variables
+  int _timeLeft = 60; // 60 seconds for the game
+  int _score = 0;
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
     _loadImageDimensions();
+    _startTimer();
+  }
+
+  // Start the countdown timer
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      if (_timeLeft > 0) {
+        setState(() {
+          _timeLeft--;
+        });
+      } else {
+        // Time is up: cancel the timer and navigate to the Congratulations screen
+        timer.cancel();
+        _endGame();
+      }
+    });
+  }
+
+  // Cancel the timer and navigate to the end game screen
+  void _endGame() {
+    _timer?.cancel();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CongratulationsScreen(finalScore: _score),
+      ),
+    );
+  }
+
+  // When the marker is tapped, update the score and end the game
+  void _onMarkerTapped() {
+    setState(() {
+      _score += 10; // Increase score by 10 (or adjust as needed)
+    });
+    // For this example, we end the game immediately after finding the marker
+    _endGame();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   /// Load the actual width/height of the image so we can scale it properly
@@ -44,95 +92,99 @@ class _FloorPlanScreenState extends State<FloorPlanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar removed
-      body: Container(
-        color: Colors.purple, // Purple background
-        alignment: Alignment.center,
-        child:
-            (originalWidth == null || originalHeight == null)
-                ? const CircularProgressIndicator() // Wait for image size to load
-                : LayoutBuilder(
-                  builder: (context, constraints) {
-                    // 1) Compute the image's aspect ratio
-                    double aspectRatio = originalWidth! / originalHeight!;
-
-                    // 2) Determine the maximum container size to fit the screen
-                    //    We'll scale to 90% width and up to 80% height if needed.
-                    double maxW = constraints.maxWidth * 0.9;
-                    double maxH = constraints.maxHeight * 0.8;
-
-                    // 3) Scale the container to keep the image aspect ratio
-                    double containerWidth = maxW;
-                    double containerHeight = containerWidth / aspectRatio;
-
-                    // If it's too tall, shrink by height
-                    if (containerHeight > maxH) {
-                      containerHeight = maxH;
-                      containerWidth = containerHeight * aspectRatio;
-                    }
-
-                    // 4) Once we know the final container size, place a gold border around it
-                    //    and put the image + marker inside a Stack.
-                    double markerSize = 40;
-
-                    // If random coords not set yet, generate them so the marker is inside the container
-                    if (randomX == null || randomY == null) {
-                      final random = Random();
-                      randomX =
-                          random.nextDouble() * (containerWidth - markerSize);
-                      randomY =
-                          random.nextDouble() * (containerHeight - markerSize);
-                    }
-
-                    return Container(
-                      width: containerWidth,
-                      height: containerHeight,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.amber,
-                          width: 6,
-                        ), // Gold border
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Stack(
-                        children: [
-                          // Floor Plan Image - fill the container exactly
-                          Positioned.fill(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: Image.asset(
-                                _getImagePath(widget.floorNumber),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          // Marker inside container boundaries
-                          Positioned(
-                            left: randomX!,
-                            top: randomY!,
-                            child: GestureDetector(
-                              onTap: () {
-                                // Navigate to CongratulationsScreen when marker is tapped
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => CongratulationsScreen(),
-                                  ),
-                                );
-                              },
-                              child: Icon(
-                                Icons.location_on,
-                                color: Colors.red,
-                                size: markerSize,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+      backgroundColor: Colors.purple, // Purple background
+      body: Column(
+        children: [
+          // Timer and Scoreboard display at the top
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Time: $_timeLeft s',
+                  style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
+                Text(
+                  'Score: $_score',
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          // Floor plan container with marker
+          Expanded(
+            child: Center(
+              child:
+                  (originalWidth == null || originalHeight == null)
+                      ? CircularProgressIndicator()
+                      : LayoutBuilder(
+                        builder: (context, constraints) {
+                          // Compute image aspect ratio
+                          double aspectRatio = originalWidth! / originalHeight!;
+                          // Determine maximum container size
+                          double maxW = constraints.maxWidth * 0.9;
+                          double maxH = constraints.maxHeight * 0.8;
+                          double containerWidth = maxW;
+                          double containerHeight = containerWidth / aspectRatio;
+                          if (containerHeight > maxH) {
+                            containerHeight = maxH;
+                            containerWidth = containerHeight * aspectRatio;
+                          }
+                          double markerSize = 40;
+                          // Generate random marker position if not set
+                          if (randomX == null || randomY == null) {
+                            final random = Random();
+                            randomX =
+                                random.nextDouble() *
+                                (containerWidth - markerSize);
+                            randomY =
+                                random.nextDouble() *
+                                (containerHeight - markerSize);
+                          }
+                          return Container(
+                            width: containerWidth,
+                            height: containerHeight,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.amber,
+                                width: 6,
+                              ), // Gold border
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Stack(
+                              children: [
+                                // Floor plan image filling the container
+                                Positioned.fill(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.asset(
+                                      _getImagePath(widget.floorNumber),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                // Randomized marker within container boundaries
+                                Positioned(
+                                  left: randomX!,
+                                  top: randomY!,
+                                  child: GestureDetector(
+                                    onTap: _onMarkerTapped,
+                                    child: Icon(
+                                      Icons.location_on,
+                                      color: Colors.red,
+                                      size: markerSize,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+            ),
+          ),
+        ],
       ),
     );
   }

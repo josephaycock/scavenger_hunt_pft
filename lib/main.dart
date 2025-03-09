@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'welcome_screen.dart'; // Use the welcome screen as the initial screen
+import 'welcome_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Scavenger Hunt',
       debugShowCheckedModeBanner: false,
-      home: WelcomeScreen(), // Start with the welcome screen
+      home: WelcomeScreen(),
     );
   }
 }

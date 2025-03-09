@@ -5,7 +5,6 @@ class FloorSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Select a Floor")),
       backgroundColor: Colors.purple, // Purple background
       body: Padding(
         padding: const EdgeInsets.fromLTRB(
@@ -19,7 +18,7 @@ class FloorSelectionScreen extends StatelessWidget {
             // Logo at the top center
             Image.asset(
               'assets/logo.png',
-              height: 100, // Adjust size as needed
+              height: 300, // Adjust size as needed
             ),
             SizedBox(height: 20),
             // Introductory text
@@ -48,6 +47,10 @@ class FloorSelectionScreen extends StatelessWidget {
                         10,
                       ), // Rounded corners
                     ),
+                    side: BorderSide(
+                      color: Colors.amber, // Golden outline
+                      width: 2,
+                    ),
                   ),
                   onPressed:
                       () => Navigator.push(
@@ -65,6 +68,7 @@ class FloorSelectionScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    side: BorderSide(color: Colors.amber, width: 2),
                   ),
                   onPressed:
                       () => Navigator.push(
@@ -82,6 +86,7 @@ class FloorSelectionScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    side: BorderSide(color: Colors.amber, width: 2),
                   ),
                   onPressed:
                       () => Navigator.push(

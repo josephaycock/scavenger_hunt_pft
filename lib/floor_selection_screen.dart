@@ -6,49 +6,85 @@ class FloorSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Select a Floor")),
-      body: Center(
-        // Ensures everything is centered
+      backgroundColor: Colors.purple, // Purple background
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centers vertically
-          crossAxisAlignment:
-              CrossAxisAlignment.center, // Ensures horizontal centering
           children: [
-            Text(
-              "Select the Floor",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            // Intro text at the top
+            Expanded(
+              child: Center(
+                child: Text(
+                  "Select a floor and track down the hidden marker.\nGood luck on your hunt!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FloorPlanScreen(floorNumber: 1),
+            // Buttons at the bottom center
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(
+                      double.infinity,
+                      50,
+                    ), // Full-width, height 50
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ), // Rounded corners
                     ),
                   ),
-              child: Text("First Floor"),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FloorPlanScreen(floorNumber: 2),
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FloorPlanScreen(floorNumber: 1),
+                        ),
+                      ),
+                  child: Text("First Floor"),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-              child: Text("Second Floor"),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FloorPlanScreen(floorNumber: 3),
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FloorPlanScreen(floorNumber: 2),
+                        ),
+                      ),
+                  child: Text("Second Floor"),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-              child: Text("Third Floor"),
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FloorPlanScreen(floorNumber: 3),
+                        ),
+                      ),
+                  child: Text("Third Floor"),
+                ),
+              ],
             ),
           ],
         ),

@@ -12,7 +12,6 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Optionally add your logo here too
               Text(
                 'Welcome to the Scavenger Hunt!',
                 textAlign: TextAlign.center,
@@ -21,6 +20,13 @@ class WelcomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
+              ),
+              SizedBox(height: 40),
+              // Display glass.png between the text and the button
+              Image.asset(
+                'assets/glass.png',
+                height: 200, // Adjust size as needed
+                fit: BoxFit.contain,
               ),
               SizedBox(height: 40),
               ElevatedButton(

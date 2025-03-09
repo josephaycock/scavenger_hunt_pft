@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart' show rootBundle;
 import 'congratulations_screen.dart'; // Import the congratulations screen
+import 'game_stats.dart';
 
 class FloorPlanScreen extends StatefulWidget {
   final int floorNumber;
@@ -52,6 +53,9 @@ class _FloorPlanScreenState extends State<FloorPlanScreen> {
   // Cancel the timer and navigate to the end game screen
   void _endGame() {
     _timer?.cancel();
+    // Update global stats
+    GameStats.huntsCompleted++;
+    GameStats.totalScore += _score;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

@@ -44,7 +44,7 @@ class _FloorPlanScreenState extends State<FloorPlanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Floor ${widget.floorNumber}")),
+      // AppBar removed
       body: Container(
         color: Colors.purple, // Purple background
         alignment: Alignment.center,
@@ -75,8 +75,7 @@ class _FloorPlanScreenState extends State<FloorPlanScreen> {
                     //    and put the image + marker inside a Stack.
                     double markerSize = 40;
 
-                    // If random coords not set yet (or you want them each build),
-                    // generate them so the marker is inside the container
+                    // If random coords not set yet, generate them so the marker is inside the container
                     if (randomX == null || randomY == null) {
                       final random = Random();
                       randomX =

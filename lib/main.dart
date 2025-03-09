@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'floor_selection_screen.dart'; // Fix import
 
 void main() {
-  runApp(const MainApp());
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('Ramsey do ya work World!'))),
+    return MaterialApp(
+      title: 'Scavenger Hunt',
+      debugShowCheckedModeBanner: false,
+      home: FloorSelectionScreen(), // Start at floor selection
     );
   }
 }

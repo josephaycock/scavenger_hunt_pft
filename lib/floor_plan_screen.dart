@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart' show rootBundle;
+import 'congratulations_screen.dart'; // Import the congratulations screen
 
 class FloorPlanScreen extends StatefulWidget {
   final int floorNumber;
@@ -102,9 +103,7 @@ class _FloorPlanScreenState extends State<FloorPlanScreen> {
                               borderRadius: BorderRadius.circular(6),
                               child: Image.asset(
                                 _getImagePath(widget.floorNumber),
-                                fit:
-                                    BoxFit
-                                        .fill, // Fill exactly - container is at correct ratio
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
@@ -114,11 +113,12 @@ class _FloorPlanScreenState extends State<FloorPlanScreen> {
                             top: randomY!,
                             child: GestureDetector(
                               onTap: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "You found an item on Floor ${widget.floorNumber}! 🎉",
-                                    ),
+                                // Navigate to CongratulationsScreen when marker is tapped
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => CongratulationsScreen(),
                                   ),
                                 );
                               },

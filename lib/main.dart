@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'floor_selection_screen.dart'; // Fix import
+import 'welcome_screen.dart'; // Use the welcome screen as the initial screen
 
 void main() {
   runApp(MyApp());
@@ -7,13 +7,12 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Scavenger Hunt',
       debugShowCheckedModeBanner: false,
-      home: FloorSelectionScreen(), // Start at floor selection
+      home: WelcomeScreen(), // Start with the welcome screen
     );
   }
 }
